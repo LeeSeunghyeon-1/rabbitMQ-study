@@ -1,0 +1,36 @@
+spring:
+  # rabbitMQ 연동
+  rabbitmq:
+    host: 192.168.50.19  # rabbitMQ host (docker로 띄웠음)
+    port: 5672 # default port
+    username: arreo # default username
+    password: egarreo01  # default password
+  config:
+    app:
+      duration: 10000
+
+
+  # Database 연동
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    platform: postgres
+    username: postgres
+    password: ujm0524
+
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+
+  # jpa properties 연동
+  jpa:
+    hibernate:
+      ddl-auto: none # When you launch the application for the first time - switch "none" at "create"
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    open-in-view: false
+#    generate-ddl: true
+
+logging:
+  root: DEBUG
