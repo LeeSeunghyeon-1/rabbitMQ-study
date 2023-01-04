@@ -12,11 +12,11 @@ import java.util.Map;
 @Getter
 @Setter
 @Entity
-@Table(name = "excel_message")
+@Table(name = "receive_message")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExcelMessage implements Serializable {
+public class ReceiveDB implements Serializable {
 
     @Id //PK
     @Column(name = "request_id")
@@ -48,5 +48,4 @@ public class ExcelMessage implements Serializable {
                 ", flag='" + flag + '\'' +
                 '}';
     }
-
 }

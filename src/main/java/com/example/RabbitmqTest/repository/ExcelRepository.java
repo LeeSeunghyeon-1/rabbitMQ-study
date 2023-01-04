@@ -6,13 +6,21 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface ExcelRepository extends JpaRepository<ExcelMessage, String> {
     List<ExcelMessage> findByFlag(String flag);
 
+
+
     ExcelMessage findByRequestId(String requestId);
+
+
+    // Select * from excel_message where request_id = ? and flag = ?
+    ExcelMessage findByRequestIdAndFlag(String requestId, String flag);
+
 
 
     @Modifying(clearAutomatically = true)

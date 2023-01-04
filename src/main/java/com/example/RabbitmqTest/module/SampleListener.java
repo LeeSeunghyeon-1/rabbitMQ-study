@@ -1,24 +1,37 @@
 package com.example.RabbitmqTest.module;
 
+import com.example.RabbitmqTest.entity.ExcelMessage;
 import com.example.RabbitmqTest.entity.Receive;
+import com.example.RabbitmqTest.repository.ExcelRepository;
 import com.rabbitmq.client.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.tomcat.util.json.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+@Getter
+@Setter
 @Component
 public class SampleListener {
 
     private static final Logger log = LoggerFactory.getLogger(SampleListener.class);
+
+    @Autowired
+    private ExcelRepository excelRepository;
 
 //    @RabbitListener(queues = "seoultel.service.jungjin_report")
 //    public void reciveMessage(final Message message) {
@@ -46,12 +59,13 @@ public class SampleListener {
     }
 
     class Consumer extends DefaultConsumer {
+        String name;
 
-        Gson gson1 = new Gson();
-
-        Gson gson2 = new GsonBuilder().create();
-        Gson gson3 = new GsonBuilder().setPrettyPrinting().create();
-
+//        Gson gson1 = new Gson();
+//
+//        Gson gson2 = new GsonBuilder().create();
+//        Gson gson3 = new GsonBuilder().setPrettyPrinting().create();
+        //private Receive receive;
 
 //        public class receiveDB {
 //
@@ -87,10 +101,9 @@ public class SampleListener {
 //        }
 
 
-
-        public void JsonToObject(){
-
-        }
+//        public void JsonToObject(){
+//
+//        }
 
         public Consumer(Channel channel) {
             super(channel);
@@ -99,6 +112,7 @@ public class SampleListener {
         @Override
         public void handleShutdownSignal(String consumerTag, ShutdownSignalException sig) {
             super.handleShutdownSignal(consumerTag, sig);
+
         }
 
         @Override
@@ -107,20 +121,83 @@ public class SampleListener {
             System.out.println("SendReportThread running - searching queue");
             String message = new String(body);
 
-            if(message != null && !message.isEmpty()){
+            if (message != null && !message.isEmpty()) {
                 log.info("message = {}", message);
-            }else{
+            } else {
                 System.out.println("ERROR : The message is null or empty !!");
             }
 
             Gson gson = new Gson();
             Receive receive = gson.fromJson(message, Receive.class);
-            log.info("야아ㅏㅏ ㅏ여기 봐ㅑ라여기야 확인해라ㅏㅏㅏ");
             log.info("receive = {}", receive);
-            log.info("requestId = {}",receive.getRequestId());
-            
+            log.info("requestId = {}", receive.getRequestId());
+
+            //TODO : some Validation..{}
+
+
+            // Id로 find
+//            ExcelMessage excelMessage = excelRepository.findByRequestId(receive.getRequestId());
+
+            for (int j = 0; j < receive.getRequestId().length(); j++) {
+
+              ExcelMessage excelMessage = excelRepository.findByRequestIdAndFlag(receive.getRequestId(), "1");
+
+            if(excelMessage != null){
+                //TODO : some 정상로직
+                log.info("삭제한 Id 확인용 = {}",excelMessage);
+                excelRepository.deleteById(excelMessage.getRequestId());
+
+            }else{
+                //TODO : 예외처리 or 버리기 등등
+                log.info("중복 Id가 아닙니다.");
+
+
+            }
+
+            }
+
+
+
+
+//            ExcelMessage excelMessage = new ExcelMessage();
+//            excelMessage.getRequestId();
+
+//            String jsonMap = String.valueOf(receive);
+//            Map<String, Object> stringObjectMapwq = new HashMap<>();
+//            Map<String, Object> stringObjectMap = gson.fromJson(jsonMap, Map.class);
+//            Receive receive1 = gson.fromJson(jsonMap, Receive.class);
+//
+//            for(int i=0; i<2; i++){
+//                jsonArr[i] = message[i]
+//
+//            }
+//            log.info("jsonMap = {}", jsonMap);
+//            if (receive.getRequestId()) {
+
+//            }
+
+//            if (excelMessage.getRequestId() == receive.getRequestId(i)) {
+//
+//            }
+//            for (int i = 0; i < excelMessage.getRequestId().length(); i++) {
+//
+//                for (int j = 0; j < receive.getRequestId().length(); j++) {
+//                    if (excelMessage.getRequestId() == receive.getRequestId()) {
+//
+//                    }
+//                }
+//            }
+//            excelMessage.iloc[[0],[0]];
+
+
+            //TODO 배열 생성 후 receive 넣고 배열 길이만큼 돌려서 id 값 비교해서 테이블에서 삭제하기
+
+
         }
+
+
     }
 }
+
 
 //TODO : 테이블에서 전달받은 ID 가 같은 행은 삭제, 새로운 테이블 추가해서 전달받은 데이터 DB에 입력
