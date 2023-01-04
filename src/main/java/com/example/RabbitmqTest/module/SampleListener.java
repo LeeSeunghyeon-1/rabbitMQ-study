@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
+import com.example.RabbitmqTest.entity.ReceiveMessage;
+
 import javax.annotation.PostConstruct;
 import java.io.FileReader;
 import java.io.IOException;
@@ -57,6 +59,17 @@ public class SampleListener {
         System.out.println("Consumer 등록");
 
     }
+
+    @Autowired
+    private ReceiveMessage receiveMessage;
+
+//    class NewFetcher extends Thread {
+//        public void updateMessage (ReceiveMessage r){
+//            ReceiveMessage updateMessage =
+//        }
+//    }
+
+    //TODO DbFetcher 보면서 새로 들어온 메시지 넣는것만 하면 됨 위에 주석처리해둔거 보면 됨
 
     class Consumer extends DefaultConsumer {
         String name;
