@@ -1,12 +1,16 @@
 package com.example.RabbitmqTest.module;
 
+import com.example.RabbitmqTest.entity.Receive;
 import com.rabbitmq.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,19 +51,45 @@ public class SampleListener {
 
         Gson gson2 = new GsonBuilder().create();
         Gson gson3 = new GsonBuilder().setPrettyPrinting().create();
-        private int newId;
-        private String newName;
 
-        public void receiveDB (int newId, String newName){
-//            super();
-            this.newId = newId;
-            this.newName = newName;
-        }
 
-        // 0 배열 저장해서 다시 저장하기
-        @Override
-        public String toString(){
-            return "receiveDB [id=" + newId + ", name =" + newName + " ] ";
+//        public class receiveDB {
+//
+////            private String newId;
+////            private String newResult;
+////            private String newRequestDateTime;
+////            private String newProcessingDateTime;
+//
+//            public receiveDB (String newId, String newResult, String newRequestDateTime, String newProcessingDateTime){
+////            super();
+//                this.newId = newId;
+//                this.newResult = newResult;
+//                this.newRequestDateTime = newRequestDateTime;
+//                this.newProcessingDateTime = newProcessingDateTime;
+//            }
+//
+//            // 0 배열 저장해서 다시 저장하기
+////            @Override
+////            public String toString(){
+////                return "receiveDB [id=" + newId + ", result =" + newResult + ", requestDateTime ="  + newRequestDateTime + ", processingDateTime = " + newProcessingDateTime + " ] ";
+////            }
+//
+//
+//            @Override
+//            public String toString() {
+//                return "receiveDB{" +
+//                        "newId='" + newId + '\'' +
+//                        ", newResult='" + newResult + '\'' +
+//                        ", newRequestDateTime='" + newRequestDateTime + '\'' +
+//                        ", newProcessingDateTime='" + newProcessingDateTime + '\'' +
+//                        '}';
+//            }
+//        }
+
+
+
+        public void JsonToObject(){
+
         }
 
         public Consumer(Channel channel) {
@@ -82,6 +112,13 @@ public class SampleListener {
             }else{
                 System.out.println("ERROR : The message is null or empty !!");
             }
+
+            Gson gson = new Gson();
+            Receive receive = gson.fromJson(message, Receive.class);
+            log.info("야아ㅏㅏ ㅏ여기 봐ㅑ라여기야 확인해라ㅏㅏㅏ");
+            log.info("receive = {}", receive);
+            log.info("requestId = {}",receive.getRequestId());
+            
         }
     }
 }
