@@ -1,29 +1,42 @@
 package com.example.RabbitmqTest.module;
 
 import com.example.RabbitmqTest.entity.ExcelMessage;
-import com.example.RabbitmqTest.entity.Receive;
+
 import com.example.RabbitmqTest.repository.ExcelRepository;
+import com.example.RabbitmqTest.repository.ReceiveRepository;
 import com.rabbitmq.client.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 import org.apache.tomcat.util.json.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Component;
 
 import com.example.RabbitmqTest.entity.ReceiveMessage;
 
 import javax.annotation.PostConstruct;
+import javax.swing.plaf.PanelUI;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 
 @Getter
 @Setter
@@ -35,10 +48,13 @@ public class SampleListener {
     @Autowired
     private ExcelRepository excelRepository;
 
-//    @RabbitListener(queues = "seoultel.service.jungjin_report")
-//    public void reciveMessage(final Message message) {
-//        log.info(message.toString());
-//    }
+    @Autowired
+    private ReceiveRepository receiveRepository;
+
+    @Autowired
+    private ReceiveRepository receiveMessage;
+
+
 
     @PostConstruct
     public void recv() throws IOException, TimeoutException {
@@ -58,65 +74,49 @@ public class SampleListener {
         recvChannel.basicConsume("seoultel.service.jungjin_report", false, new Consumer(recvChannel));
         System.out.println("Consumer 등록");
 
+
     }
 
-    @Autowired
-    private ReceiveMessage receiveMessage;
+
+//    private NewFetcher newFetcher;
+
+//    @PostConstruct
+//    public void NewFetcher(){
+//        log.info("새로운 DB가 등록됨");
+//        this.newFetcher = new NewFetcher();
+//        this.newFetcher.start();
+//    }
+
+
 
 //    class NewFetcher extends Thread {
-//        public void updateMessage (ReceiveMessage r){
-//            ReceiveMessage updateMessage =
+//        public void saveMessage (ReceiveMessage r){
+//
+////            saveAll();
+//            ReceiveMessage saveMessage = receiveRepository.save(r);
+//
+//            log.info("NewDb update => {}", saveMessage.toString());
+//        }
+//
+//
+//        @Override
+//        public void run() {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//
+//            }
+//                saveMessage(receiveMessage);
+//                log.info("receiveMessage확인 = > {}", receiveMessage);
+//
 //        }
 //    }
 
-    //TODO DbFetcher 보면서 새로 들어온 메시지 넣는것만 하면 됨 위에 주석처리해둔거 보면 됨
 
     class Consumer extends DefaultConsumer {
         String name;
 
-//        Gson gson1 = new Gson();
-//
-//        Gson gson2 = new GsonBuilder().create();
-//        Gson gson3 = new GsonBuilder().setPrettyPrinting().create();
-        //private Receive receive;
-
-//        public class receiveDB {
-//
-////            private String newId;
-////            private String newResult;
-////            private String newRequestDateTime;
-////            private String newProcessingDateTime;
-//
-//            public receiveDB (String newId, String newResult, String newRequestDateTime, String newProcessingDateTime){
-////            super();
-//                this.newId = newId;
-//                this.newResult = newResult;
-//                this.newRequestDateTime = newRequestDateTime;
-//                this.newProcessingDateTime = newProcessingDateTime;
-//            }
-//
-//            // 0 배열 저장해서 다시 저장하기
-////            @Override
-////            public String toString(){
-////                return "receiveDB [id=" + newId + ", result =" + newResult + ", requestDateTime ="  + newRequestDateTime + ", processingDateTime = " + newProcessingDateTime + " ] ";
-////            }
-//
-//
-//            @Override
-//            public String toString() {
-//                return "receiveDB{" +
-//                        "newId='" + newId + '\'' +
-//                        ", newResult='" + newResult + '\'' +
-//                        ", newRequestDateTime='" + newRequestDateTime + '\'' +
-//                        ", newProcessingDateTime='" + newProcessingDateTime + '\'' +
-//                        '}';
-//            }
-//        }
-
-
-//        public void JsonToObject(){
-//
-//        }
 
         public Consumer(Channel channel) {
             super(channel);
@@ -141,7 +141,7 @@ public class SampleListener {
             }
 
             Gson gson = new Gson();
-            Receive receive = gson.fromJson(message, Receive.class);
+            ReceiveMessage receive = gson.fromJson(message, ReceiveMessage.class);
             log.info("receive = {}", receive);
             log.info("requestId = {}", receive.getRequestId());
 
@@ -151,14 +151,21 @@ public class SampleListener {
             // Id로 find
 //            ExcelMessage excelMessage = excelRepository.findByRequestId(receive.getRequestId());
 
-            for (int j = 0; j < receive.getRequestId().length(); j++) {
 
-              ExcelMessage excelMessage = excelRepository.findByRequestIdAndFlag(receive.getRequestId(), "1");
+            ExcelMessage excelMessage = excelRepository.findByRequestIdAndFlag(receive.getRequestId(), "1");
 
             if(excelMessage != null){
                 //TODO : some 정상로직
                 log.info("삭제한 Id 확인용 = {}",excelMessage);
                 excelRepository.deleteById(excelMessage.getRequestId());
+
+
+
+                receiveRepository.save(receive);
+
+                log.info("receiveMessage = {}", receive);
+
+
 
             }else{
                 //TODO : 예외처리 or 버리기 등등
@@ -167,7 +174,6 @@ public class SampleListener {
 
             }
 
-            }
 
 
 

@@ -17,27 +17,50 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ReceiveMessage implements Serializable {
 
+//    @Id //PK
+//    @Column(name = "receive_id")
+//    private String receiveId;
+//
+//    @Column(name = "receive_result")
+//    private String receiveResult;
+//
+//    @Column(name = "receive_request_date_time")
+//    private String receiveRequestDateTime;
+//
+//    @Column(name = "receive_processing_date_time")
+//    private String receiveProcessingDateTime;
+
     @Id //PK
     @Column(name = "receive_id")
-    private String receiveId;
+    private String requestId;
 
     @Column(name = "receive_result")
-    private String receiveResult;
+    private String result;
 
     @Column(name = "receive_request_date_time")
-    private String receiveRequestDateTime;
+    private String requestDateTime;
 
     @Column(name = "receive_processing_date_time")
-    private String receiveProcessingDateTime;
+    private String processingDateTime;
 
+
+//    @Override
+//    public String toString() {
+//        return "ExcelMessage{" +
+//                "receive_id='" + receiveId + '\'' +
+//                ", receive_result='" + receiveResult + '\'' +
+//                ", receive_request_date_time='" + receiveRequestDateTime + '\'' +
+//                ", receive_processing_date_time='" + receiveProcessingDateTime + '\'' +
+//                '}';
+//    }
 
     @Override
     public String toString() {
-        return "ExcelMessage{" +
-                "receive_id='" + receiveId + '\'' +
-                ", receive_result='" + receiveResult + '\'' +
-                ", receive_request_date_time='" + receiveRequestDateTime + '\'' +
-                ", receive_processing_date_time='" + receiveProcessingDateTime + '\'' +
+        return "ReceiveMessage{" +
+                "requestId='" + requestId + '\'' +
+                ", result='" + result + '\'' +
+                ", requestDateTime='" + requestDateTime + '\'' +
+                ", processingDateTime='" + processingDateTime + '\'' +
                 '}';
     }
 }

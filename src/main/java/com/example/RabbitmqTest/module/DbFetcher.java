@@ -101,21 +101,7 @@ public class DbFetcher {
             log.info("updated message => {}", updateFlag.toString());
 
 
-            //excelRepository.updateFlag("1", e.getRequestId());
-
-//            List<ExcelMessage> findFlag = excelRepository.findByFlag(e.getRequestId());
-//            Assertions.assertThat(findFlag.get().getFlag().isEqualTo(newFlag));
         }
-
-
-//        Map<String, String> map = new HashMap<>();
-//
-//        Gson gson = new Gson();
-//        //String jsonStr = new Gson.toJson(map);
-
-//        private String Report;
-//        Report report = new Gson().fromJson("aptlwl", Report.class);
-
 
             @Override
             public void run() {
