@@ -17,7 +17,6 @@ spring:
     platform: postgres
     username: postgres
     password: ujm0524
-
     hikari:
       connection-timeout: 20000
       maximum-pool-size: 10

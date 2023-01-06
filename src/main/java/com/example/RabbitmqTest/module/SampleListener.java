@@ -163,7 +163,7 @@ public class SampleListener {
 
                 receiveRepository.save(receive);
 
-                log.info("receiveMessage = {}", receive);
+                log.info("receiveRepository = {}", receiveRepository);
 
 
 

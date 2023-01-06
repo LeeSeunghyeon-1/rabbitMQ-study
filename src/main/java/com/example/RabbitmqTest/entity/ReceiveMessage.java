@@ -35,32 +35,24 @@ public class ReceiveMessage implements Serializable {
     private String requestId;
 
     @Column(name = "receive_result")
-    private String result;
+    private String requestResult;
 
     @Column(name = "receive_request_date_time")
     private String requestDateTime;
 
     @Column(name = "receive_processing_date_time")
-    private String processingDateTime;
+    private String requestPocessingDateTime;
 
 
-//    @Override
-//    public String toString() {
-//        return "ExcelMessage{" +
-//                "receive_id='" + receiveId + '\'' +
-//                ", receive_result='" + receiveResult + '\'' +
-//                ", receive_request_date_time='" + receiveRequestDateTime + '\'' +
-//                ", receive_processing_date_time='" + receiveProcessingDateTime + '\'' +
-//                '}';
-//    }
+
 
     @Override
     public String toString() {
         return "ReceiveMessage{" +
                 "requestId='" + requestId + '\'' +
-                ", result='" + result + '\'' +
+                ", requestResult='" + requestResult + '\'' +
                 ", requestDateTime='" + requestDateTime + '\'' +
-                ", processingDateTime='" + processingDateTime + '\'' +
+                ", requestPocessingDateTime='" + requestPocessingDateTime + '\'' +
                 '}';
     }
 }
