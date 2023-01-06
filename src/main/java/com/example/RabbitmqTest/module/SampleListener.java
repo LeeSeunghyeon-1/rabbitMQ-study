@@ -175,40 +175,6 @@ public class SampleListener {
             }
 
 
-
-
-
-//            ExcelMessage excelMessage = new ExcelMessage();
-//            excelMessage.getRequestId();
-
-//            String jsonMap = String.valueOf(receive);
-//            Map<String, Object> stringObjectMapwq = new HashMap<>();
-//            Map<String, Object> stringObjectMap = gson.fromJson(jsonMap, Map.class);
-//            Receive receive1 = gson.fromJson(jsonMap, Receive.class);
-//
-//            for(int i=0; i<2; i++){
-//                jsonArr[i] = message[i]
-//
-//            }
-//            log.info("jsonMap = {}", jsonMap);
-//            if (receive.getRequestId()) {
-
-//            }
-
-//            if (excelMessage.getRequestId() == receive.getRequestId(i)) {
-//
-//            }
-//            for (int i = 0; i < excelMessage.getRequestId().length(); i++) {
-//
-//                for (int j = 0; j < receive.getRequestId().length(); j++) {
-//                    if (excelMessage.getRequestId() == receive.getRequestId()) {
-//
-//                    }
-//                }
-//            }
-//            excelMessage.iloc[[0],[0]];
-
-
             //TODO 배열 생성 후 receive 넣고 배열 길이만큼 돌려서 id 값 비교해서 테이블에서 삭제하기
 
 

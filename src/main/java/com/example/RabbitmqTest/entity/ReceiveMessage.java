@@ -35,24 +35,22 @@ public class ReceiveMessage implements Serializable {
     private String requestId;
 
     @Column(name = "receive_result")
-    private String requestResult;
+    private String result;
 
     @Column(name = "receive_request_date_time")
     private String requestDateTime;
 
     @Column(name = "receive_processing_date_time")
-    private String requestPocessingDateTime;
-
-
+    private String processingDateTime;
 
 
     @Override
     public String toString() {
         return "ReceiveMessage{" +
                 "requestId='" + requestId + '\'' +
-                ", requestResult='" + requestResult + '\'' +
+                ", result='" + result + '\'' +
                 ", requestDateTime='" + requestDateTime + '\'' +
-                ", requestPocessingDateTime='" + requestPocessingDateTime + '\'' +
+                ", processingDateTime='" + processingDateTime + '\'' +
                 '}';
     }
 }
